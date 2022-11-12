@@ -1,6 +1,7 @@
 import React from "react";
 import img1 from "../../assets/images/chair.png";
 import bg from "../../assets/images/bg.png";
+import PrimaryButton from "../../components/primaryButton/PrimaryButton";
 
 const Banner = () => {
   return (
@@ -18,9 +19,10 @@ const Banner = () => {
             However, without proper oral hygiene, bacteria can reach levels that
             might lead to oral infections, such as tooth decay and gum disease.
           </p>
-          <button className="btn btn-primary bg-gradient-to-r from-primary to-secondary text-white">
+          {/* <button className="btn btn-primary bg-gradient-to-r from-primary to-secondary text-white">
             Get Started
-          </button>
+          </button> */}
+          <PrimaryButton>Get Started</PrimaryButton>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import treatment from "../../../assets/images/treatment.png";
+import PrimaryButton from "../../../components/primaryButton/PrimaryButton";
 
 const Treatment = () => {
   return (
@@ -22,7 +23,8 @@ const Treatment = () => {
             time to explain your treatment options in an easy-to-understand
             manner.
           </p>
-          <button className="btn btn-primary absolute">Get Started</button>
+          {/* <button className="btn btn-primary absolute">Get Started</button> */}
+          <PrimaryButton>Get Started</PrimaryButton>
         </div>
       </div>
     </div>
