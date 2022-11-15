@@ -1,7 +1,6 @@
 import React from "react";
-import PrimaryButton from "../../../components/primaryButton/PrimaryButton";
 
-const AvailableAppointmentCard = ({ service }) => {
+const AvailableAppointmentCard = ({ service, setServiceModal }) => {
   const { name, slots } = service;
   return (
     <div className="card  shadow-xl w">
@@ -16,7 +15,14 @@ const AvailableAppointmentCard = ({ service }) => {
           {slots.length} {slots.length > 1 ? "spaces" : "space"} available
         </p>
         <div className="card-actions justify-center">
-          <PrimaryButton>Book Appointment</PrimaryButton>
+          <label
+            htmlFor="booking-modal"
+            className="btn btn-primary bg-gradient-to-r from-primary to-secondary text-white"
+            onClick={() => setServiceModal(service)}
+            disabled={slots.length === 0}
+          >
+            Book Appintment
+          </label>
         </div>
       </div>
     </div>
