@@ -1,17 +1,35 @@
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AvailableAppointmentCard from "./AvailableAppointmentCard";
 import BookingModal from "./BookingModal";
 
 const AvailableAppoointment = ({ selectedDate }) => {
-  const [services, setServices] = useState([]);
+  // const [services, setServices] = useState([]);
   const [serviceModal, setServiceModal] = useState(null);
 
-  useEffect(() => {
-    fetch("services.json")
-      .then((res) => res.json())
-      .then((data) => setServices(data));
-  }, []);
+  const { data: services = [] } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: async () => {
+      const res = await fetch("http://localhost:5000/appointments");
+      const data = await res.json();
+      return data;
+    },
+  });
+
+  //using react-query for fetching data
+  // const { data: services = [] } = useQuery({
+  //   queryKey: ["appointments"],
+  //   queryFn: () =>
+  //     fetch("http://localhost:5000/appointments").then((res) => res.json()),
+  // });
+
+  //using useEffect for fetching data
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/appointments")
+  //     .then((res) => res.json())
+  //     .then((data) => setServices(data));
+  // }, []);
   return (
     <section>
       <p className="text-center text-secondary font-bold mt-3">

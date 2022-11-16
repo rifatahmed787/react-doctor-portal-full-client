@@ -1,9 +1,12 @@
 import { format } from "date-fns";
-import React from "react";
+import React, { useContext } from "react";
+import toast from "react-hot-toast";
+import { AuthContext } from "../../../context/AuthProvider";
 
 const BookingModal = ({ serviceModal, selectedDate, setServiceModal }) => {
   const { name, slots } = serviceModal;
   const date = format(selectedDate, "PP");
+  const { user } = useContext(AuthContext);
 
   const handleBookingForm = (event) => {
     event.preventDefault();
@@ -14,14 +17,27 @@ const BookingModal = ({ serviceModal, selectedDate, setServiceModal }) => {
     const email = form.email.value;
     const BooikingData = {
       selectedDate: date,
-      serviceModal: name,
       name: name,
       slot,
       email,
       phone,
     };
-    console.log(BooikingData);
-    setServiceModal(null);
+
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(BooikingData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.acknowledged) {
+          setServiceModal(null);
+          toast.success("Booking confirmed");
+        }
+      });
   };
 
   return (
@@ -54,6 +70,7 @@ const BookingModal = ({ serviceModal, selectedDate, setServiceModal }) => {
               ))}
             </select>
             <input
+              defaultValue={user?.displayName}
               name="name"
               type="text"
               placeholder="Full Name"
@@ -66,6 +83,7 @@ const BookingModal = ({ serviceModal, selectedDate, setServiceModal }) => {
               className="input input-bordered input-md w-full"
             />
             <input
+              defaultValue={user?.email}
               name="email"
               type="email"
               placeholder="Email"
