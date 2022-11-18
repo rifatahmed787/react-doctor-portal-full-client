@@ -86,6 +86,13 @@ const Navbar = () => {
       <div className="navbar-end hidden lg:flex">
         <ul className="menu menu-horizontal p-0">{menuItems}</ul>
       </div>
+      <label
+        htmlFor="dashboard-drawer"
+        tabIndex={0}
+        className="btn btn-ghost btn-xs ml-20 rounded-md lg:hidden"
+      >
+        Open Drawer
+      </label>
     </div>
   );
 };
