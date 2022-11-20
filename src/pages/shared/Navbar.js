@@ -1,14 +1,19 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import png from "../../assets/png/doctor.png";
 import { AuthContext } from "../../context/AuthProvider";
 
 const Navbar = () => {
   const { SignOut, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
     SignOut()
-      .then(() => {})
+      .then(() => {
+        toast.success("Successfully loged out");
+        navigate("/login");
+      })
       .catch((error) => console.error(error));
   };
   const menuItems = (
