@@ -1,9 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import ConfirmationModal from "../../shared/ConfirmationModal/ConfirmationModal";
 import Loading from "../../shared/Loading";
 
 const ManageDoctors = () => {
-  const { data: doctors = [], isLoading } = useQuery({
+  const [deletingDoctor, setDeletingDoctor] = useState(null);
+
+  const {
+    data: doctors = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
       try {
@@ -13,13 +21,33 @@ const ManageDoctors = () => {
           },
         });
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         return data;
       } catch (error) {
         console.error(error);
       }
     },
   });
+
+  const handleCancel = () => {
+    setDeletingDoctor(null);
+  };
+
+  const handleDeleteDoctors = (doctor) => {
+    fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount > 0) {
+          refetch();
+          toast.success(`Doctor ${doctor.name} deleted successfully`);
+        }
+      });
+  };
 
   if (isLoading) {
     <Loading></Loading>;
@@ -55,13 +83,28 @@ const ManageDoctors = () => {
                   <td>{doctor.email}</td>
                   <td>{doctor.specialty}</td>
                   <td>
-                    <button className="btn btn-sm btn-error">Delete</button>
+                    <label
+                      onClick={() => setDeletingDoctor(doctor)}
+                      htmlFor="confirmation-modal"
+                      className="btn btn-sm btn-error"
+                    >
+                      Delete
+                    </label>
                   </td>
                 </tr>
               ))}
           </tbody>
         </table>
       </div>
+      {deletingDoctor && (
+        <ConfirmationModal
+          title={`Are you sure want to delete?`}
+          message={`If you delete ${deletingDoctor.name}, he/she will not be available.`}
+          handleDeleteDoctors={handleDeleteDoctors}
+          modalData={deletingDoctor}
+          handleCancel={handleCancel}
+        ></ConfirmationModal>
+      )}
     </div>
   );
 };
