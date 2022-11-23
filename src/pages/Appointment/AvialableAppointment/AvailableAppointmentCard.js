@@ -1,7 +1,7 @@
 import React from "react";
 
 const AvailableAppointmentCard = ({ service, setServiceModal }) => {
-  const { name, slots } = service;
+  const { name, slots, price } = service;
   return (
     <div className="card  shadow-xl w">
       <div className="card-body">
@@ -14,6 +14,7 @@ const AvailableAppointmentCard = ({ service, setServiceModal }) => {
         <p className="text-center py-2">
           {slots.length} {slots.length > 1 ? "spaces" : "space"} available
         </p>
+        <p className="text-center py-1">Visit: ${price}</p>
         <div className="card-actions justify-center">
           <label
             htmlFor="booking-modal"
